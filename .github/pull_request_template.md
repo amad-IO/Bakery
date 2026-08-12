@@ -11,7 +11,7 @@
 
 ## Affected Packages
 - [ ] `backend/` — Go REST API
-- [ ] `dashboard/` — React SPA (Admin & Kasir)
+- [ ] `frontend/` — React SPA (Admin & Kasir)
 - [ ] `web/` — Public landing page
 - [ ] Root config (docker-compose, CI/CD, etc.)
 

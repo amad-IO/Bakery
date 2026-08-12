@@ -11,7 +11,7 @@ assignees: ""
 
 ## Affected Package
 - [ ] `backend/`
-- [ ] `dashboard/`
+- [ ] `frontend/`
 - [ ] `web/`
 
 ## Steps to Reproduce
@@ -28,5 +28,5 @@ assignees: ""
 ## Environment
 - OS: 
 - Go version (if backend): 
-- Node version (if dashboard/web): 
+- Node version (if frontend/web): 
 - Browser (if frontend): 

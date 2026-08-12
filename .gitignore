@@ -33,10 +33,10 @@ backend/vendor/
 go/
 go_sdk/
 
-# ─── Node / Dashboard (dashboard/) ──────────────────────────
-dashboard/node_modules/
-dashboard/dist/
-dashboard/.vite/
+# ─── Node / Dashboard (frontend/) ──────────────────────────
+frontend/node_modules/
+frontend/dist/
+frontend/.vite/
 
 # ─── Docker ─────────────────────────────────────────────────
 docker-data/
@@ -47,3 +47,6 @@ postgres-data/
 *.pid
 coverage/
 .cache/
+
+go_122/
+go_122.zip

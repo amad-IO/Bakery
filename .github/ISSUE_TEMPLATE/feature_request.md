@@ -17,7 +17,7 @@ assignees: ""
 
 ## Affected Package
 - [ ] `backend/`
-- [ ] `dashboard/`
+- [ ] `frontend/`
 - [ ] `web/`
 
 ## Additional Context

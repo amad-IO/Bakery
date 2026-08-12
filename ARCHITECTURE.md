@@ -104,7 +104,7 @@ backend/
 
 ### `/dashboard`
 ```
-dashboard/
+frontend/
 ├── src/
 │   ├── pages/
 │   │   ├── auth/Login.tsx

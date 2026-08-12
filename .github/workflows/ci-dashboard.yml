@@ -1,6 +1,6 @@
 # ─────────────────────────────────────────────────────────────────
 # CI — Dashboard (React / Vite)
-# Triggers on push/PR when files under dashboard/ change
+# Triggers on push/PR when files under frontend/ change
 # ─────────────────────────────────────────────────────────────────
 name: CI · Dashboard
 
@@ -8,12 +8,12 @@ on:
   push:
     branches: [main, develop]
     paths:
-      - "dashboard/**"
+      - "frontend/**"
       - ".github/workflows/ci-dashboard.yml"
   pull_request:
     branches: [main, develop]
     paths:
-      - "dashboard/**"
+      - "frontend/**"
       - ".github/workflows/ci-dashboard.yml"
 
 jobs:
@@ -33,7 +33,7 @@ jobs:
         with:
           node-version: 20
           cache: npm
-          cache-dependency-path: dashboard/package-lock.json
+          cache-dependency-path: frontend/package-lock.json
 
       - name: Install dependencies
         run: npm ci

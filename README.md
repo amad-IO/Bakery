@@ -34,7 +34,7 @@ shoop/
 │       ├── routes/
 │       ├── services/
 │       └── utils/
-├── dashboard/         # React SPA (admin + kasir)
+├── frontend/         # React SPA (admin + kasir)
 │   └── src/
 │       ├── lib/       # API client, Auth context
 │       ├── pages/
@@ -200,7 +200,7 @@ Base URL: `http://localhost:8080/api/v1`
 | `GET` | `/orders/:code` | — | Cek status pesanan |
 | `POST` | `/pos/orders` | kasir/admin | POS walk-in order |
 | `PATCH` | `/pos/products/:id/stock` | kasir/admin | Update stok |
-| `GET` | `/admin/dashboard/stats` | admin | Statistik dashboard |
+| `GET` | `/admin/frontend/stats` | admin | Statistik dashboard |
 | `GET` | `/admin/orders` | admin | Semua pesanan |
 | `GET` | `/admin/logs` | admin | Log aktivitas |
 | `PATCH` | `/admin/settings` | admin | Update pengaturan |

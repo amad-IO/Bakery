@@ -2,7 +2,7 @@
 
 ## Architecture
 - Backend: Go 1.22+ with Gin web framework, GORM ORM, PostgreSQL database (`backend/`).
-- Dashboard SPA: React 18+ with Vite, TypeScript, Tailwind CSS, TanStack Query, React Router v6, React Hook Form + Zod, Recharts, jsbarcode, html5-qrcode (`dashboard/`).
+- Dashboard SPA: React 18+ with Vite, TypeScript, Tailwind CSS, TanStack Query, React Router v6, React Hook Form + Zod, Recharts, jsbarcode, html5-qrcode (`frontend/`).
 - Public Landing Page: Static HTML5, Tailwind CSS (CDN), GSAP 3 + ScrollTrigger, Lenis smooth scroll, jsbarcode Code128 (`web/`).
 - DevOps: Docker Compose (`docker-compose.yml`) for Go backend + PostgreSQL 15, `.env.example` configurations.
 
@@ -18,8 +18,8 @@
 | 7 | Public Pre-Order API & Order Code | `POST /orders`, `GET /orders/:order_code`, server-side `KYA-YYYYMMDD-XXXX` generator, master price snapshot | M3 | API.md, R2 |
 | 8 | Mock Payment & Stock Deduction API | `POST /orders/:id/pay_mock`, transition to `paid`, stock deduction (`stock_qty`), `stock_movements` (`type: out`), barcode payload | M3 | API.md, R2 |
 | 9 | POS Cashier API | `POST /pos/orders`, `GET /pos/orders/scan/:order_code`, `PATCH /pos/orders/:id/status`, `POST /pos/orders/:id/payments`, `POST /pos/products`, `PATCH /pos/products/:id/stock` | M3 | API.md, R2 |
-| 10 | Admin Stats, Logs & Settings API | `GET /admin/dashboard/stats`, `GET /admin/logs`, `GET/PATCH /admin/settings` | M3 | API.md |
-| 11 | Dashboard Infrastructure & Auth | React + Vite + TS SPA setup in `dashboard/`, Tailwind configuration with design tokens (`#241610`, `#e8a33d`, `#faf7f2`, Geist/Inter), Auth Context, React Router v6 role-protected routes (`/admin/*`, `/kasir/*`) | M4 | R3, DESIGN.md |
+| 10 | Admin Stats, Logs & Settings API | `GET /admin/frontend/stats`, `GET /admin/logs`, `GET/PATCH /admin/settings` | M3 | API.md |
+| 11 | Dashboard Infrastructure & Auth | React + Vite + TS SPA setup in `frontend/`, Tailwind configuration with design tokens (`#241610`, `#e8a33d`, `#faf7f2`, Geist/Inter), Auth Context, React Router v6 role-protected routes (`/admin/*`, `/kasir/*`) | M4 | R3, DESIGN.md |
 | 12 | Admin Dashboard SPA Pages | `DashboardHome` (stats cards + Recharts), `Products` (CRUD table, zero-stock "Habis" badge), `Orders` (filtering), `Cashiers` (list, create, toggle `is_active`), `ActivityLogs` (paginated table), `Settings` (form) | M4 | R3, USER-FLOWS.md |
 | 13 | Cashier POS SPA Pages | `POS` (touch grid, sticky cart, payment modal, receipt + Code128 barcode display, auto-reset cart), `ScanOrder` (`html5-qrcode` camera scan, order lookup, confirm payment), `AddProduct` (product entry, initial stock 0, quick restock) | M4 | R3, USER-FLOWS.md |
 | 14 | Public Landing Page Catalog & Pre-order | `web/index.html` static HTML/Tailwind CDN, dark brown canvas `#241610`, amber `#e8a33d`, glassmorphism cards, GSAP/Lenis animations, live API product fetch, out-of-stock overlay, customer info modal, mock payment screen, `jsbarcode` Code128 rendering, "Simpan Barcode" PNG download button, `prefers-reduced-motion` compliance | M5 | R4, DESIGN.md |
@@ -33,7 +33,7 @@
 | M1 | Backend Foundation & DB Schema | Setup `backend/` Go module, GORM models (9 tables), DB connection, migrations | none | DONE |
 | M2 | Auth, Middleware & Seed CLI | JWT auth, role middleware, activity logging service, admin seed script | M1 | PLANNED |
 | M3 | Core API Endpoints & Business Logic | Product CRUD, Pre-orders (`KYA-YYYYMMDD-XXXX`), Mock Payment & Stock Deduction (`pay_mock`), POS endpoints, Admin Stats/Logs/Settings | M1, M2 | PLANNED |
-| M4 | Dashboard SPA Frontend | React/Vite/TS SPA in `dashboard/`, Auth routing, Admin screens, Cashier POS (`jsbarcode`, `html5-qrcode`) | M3 | PLANNED |
+| M4 | Dashboard SPA Frontend | React/Vite/TS SPA in `frontend/`, Auth routing, Admin screens, Cashier POS (`jsbarcode`, `html5-qrcode`) | M3 | PLANNED |
 | M5 | Public Landing Page & Order Status | Static HTML/Tailwind/GSAP in `web/`, live catalog, pre-order modal, mock payment, Code128 barcode download, order status lookup | M3 | PLANNED |
 | M6 | Docker Compose & Developer Setup | `docker-compose.yml`, `.env.example` templates, updated setup documentation in `README.md` | M1, M2, M3, M4, M5 | PLANNED |
 | M-TEST | E2E Testing Track | Independent requirement-driven test suite (Tiers 1-4) published via `TEST_READY.md` | none (runs in parallel) | DONE |
@@ -64,7 +64,7 @@ e:\work\shoop\
 │   │   └── services/         # Business Logic (Order code gen, Stock deduction)
 │   ├── .env.example
 │   └── go.mod
-├── dashboard/                # React + Vite + TS SPA (R3)
+├── frontend/                # React + Vite + TS SPA (R3)
 │   ├── src/
 │   │   ├── components/       # UI Components (Sidebar, Header, Cards, Barcode, Scanner)
 │   │   ├── context/          # Auth Context & Provider
