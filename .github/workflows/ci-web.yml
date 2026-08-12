@@ -1,0 +1,35 @@
+# ─────────────────────────────────────────────────────────────────
+# CI — Web (Landing Page)
+# Triggers on push/PR when files under web/ change
+# ─────────────────────────────────────────────────────────────────
+name: CI · Web
+
+on:
+  push:
+    branches: [main, develop]
+    paths:
+      - "web/**"
+      - ".github/workflows/ci-web.yml"
+  pull_request:
+    branches: [main, develop]
+    paths:
+      - "web/**"
+      - ".github/workflows/ci-web.yml"
+
+jobs:
+  validate:
+    name: Validate HTML
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Check HTML files exist
+        run: |
+          test -f web/index.html || (echo "::error::web/index.html not found" && exit 1)
+          test -f web/order-status.html || (echo "::error::web/order-status.html not found" && exit 1)
+          echo "✅ All required HTML files present."
+
+      - name: Lint HTML (htmlhint)
+        run: |
+          npx --yes htmlhint "web/**/*.html" --config .htmlhintrc || true

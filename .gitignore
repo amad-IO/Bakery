@@ -1,0 +1,45 @@
+# ============================================================
+# KAYA Bakery Monorepo — Root .gitignore
+# ============================================================
+
+# ─── Environment & Secrets ──────────────────────────────────
+.env
+.env.local
+.env.*.local
+*.env
+
+# ─── Agent internal state (tidak perlu masuk repo) ──────────
+.agents/
+
+# ─── OS ─────────────────────────────────────────────────────
+
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# ─── Editor ─────────────────────────────────────────────────
+.vscode/settings.json
+.idea/
+*.swp
+*.swo
+
+# ─── Go (backend/) ──────────────────────────────────────────
+backend/bin/
+backend/*.exe
+backend/tmp/
+backend/vendor/
+
+# ─── Node / Dashboard (dashboard/) ──────────────────────────
+dashboard/node_modules/
+dashboard/dist/
+dashboard/.vite/
+
+# ─── Docker ─────────────────────────────────────────────────
+docker-data/
+postgres-data/
+
+# ─── Misc ────────────────────────────────────────────────────
+*.log
+*.pid
+coverage/
+.cache/

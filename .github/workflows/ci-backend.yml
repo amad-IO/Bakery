@@ -1,0 +1,74 @@
+# ─────────────────────────────────────────────────────────────────
+# CI — Backend (Go)
+# Triggers on push/PR when files under backend/ change
+# ─────────────────────────────────────────────────────────────────
+name: CI · Backend
+
+on:
+  push:
+    branches: [main, develop]
+    paths:
+      - "backend/**"
+      - ".github/workflows/ci-backend.yml"
+  pull_request:
+    branches: [main, develop]
+    paths:
+      - "backend/**"
+      - ".github/workflows/ci-backend.yml"
+
+jobs:
+  test:
+    name: Build & Test (Go)
+    runs-on: ubuntu-latest
+
+    services:
+      postgres:
+        image: postgres:15-alpine
+        env:
+          POSTGRES_USER: kaya
+          POSTGRES_PASSWORD: kayasecret
+          POSTGRES_DB: kaya_bakery_test
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+
+    defaults:
+      run:
+        working-directory: backend
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup Go
+        uses: actions/setup-go@v5
+        with:
+          go-version-file: backend/go.mod
+          cache: true
+
+      - name: Download dependencies
+        run: go mod download
+
+      - name: Vet
+        run: go vet ./...
+
+      - name: Build
+        run: go build -v ./...
+
+      - name: Run tests
+        env:
+          DATABASE_URL: postgres://kaya:kayasecret@localhost:5432/kaya_bakery_test?sslmode=disable
+          JWT_SECRET: ci-test-secret
+          JWT_EXPIRY_HOURS: 24
+          PORT: 8080
+          CORS_ALLOWED_ORIGINS: http://localhost:5173
+        run: go test -v -race -coverprofile=coverage.out ./...
+
+      - name: Upload coverage
+        uses: codecov/codecov-action@v4
+        with:
+          files: backend/coverage.out
+          flags: backend
