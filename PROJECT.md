@@ -30,13 +30,13 @@
 ## Milestones
 | # | Name | Scope | Dependencies | Status |
 |---|------|-------|-------------|--------|
-| M1 | Backend Foundation & DB Schema | Setup `backend/` Go module, GORM models (9 tables), DB connection, migrations | none | PLANNED |
+| M1 | Backend Foundation & DB Schema | Setup `backend/` Go module, GORM models (9 tables), DB connection, migrations | none | DONE |
 | M2 | Auth, Middleware & Seed CLI | JWT auth, role middleware, activity logging service, admin seed script | M1 | PLANNED |
 | M3 | Core API Endpoints & Business Logic | Product CRUD, Pre-orders (`KYA-YYYYMMDD-XXXX`), Mock Payment & Stock Deduction (`pay_mock`), POS endpoints, Admin Stats/Logs/Settings | M1, M2 | PLANNED |
 | M4 | Dashboard SPA Frontend | React/Vite/TS SPA in `dashboard/`, Auth routing, Admin screens, Cashier POS (`jsbarcode`, `html5-qrcode`) | M3 | PLANNED |
 | M5 | Public Landing Page & Order Status | Static HTML/Tailwind/GSAP in `web/`, live catalog, pre-order modal, mock payment, Code128 barcode download, order status lookup | M3 | PLANNED |
 | M6 | Docker Compose & Developer Setup | `docker-compose.yml`, `.env.example` templates, updated setup documentation in `README.md` | M1, M2, M3, M4, M5 | PLANNED |
-| M-TEST | E2E Testing Track | Independent requirement-driven test suite (Tiers 1-4) published via `TEST_READY.md` | none (runs in parallel) | PLANNED |
+| M-TEST | E2E Testing Track | Independent requirement-driven test suite (Tiers 1-4) published via `TEST_READY.md` | none (runs in parallel) | DONE |
 
 ## Interface Contracts
 ### Public API ↔ Frontend (Dashboard & Landing Page)

@@ -29,6 +29,10 @@ backend/*.exe
 backend/tmp/
 backend/vendor/
 
+# ─── Local Go SDK & Module Cache (not committed) ─────────────
+go/
+go_sdk/
+
 # ─── Node / Dashboard (dashboard/) ──────────────────────────
 dashboard/node_modules/
 dashboard/dist/

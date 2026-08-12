@@ -1,0 +1,583 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>KAYA Bakery — Roti Segar Dipanggang Setiap Pagi</title>
+  <meta name="description" content="KAYA Bakery menghadirkan roti segar berkualitas tinggi yang dipanggang setiap pagi. Pesan online, ambil di toko, bayar di tempat." />
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:ital,wght@0,400;0,500;0,600;1,400&display=swap" rel="stylesheet" />
+  <!-- Tailwind CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            primary: '#e8a33d',
+            'primary-dark': '#c9821f',
+            canvas: '#241610',
+            'canvas-alt': '#3a2415',
+            cream: '#f3ede3',
+            success: '#7fbf6a',
+            danger: '#e0654f',
+          },
+          fontFamily: {
+            sans: ['Inter', 'sans-serif'],
+          },
+          borderRadius: { xl2: '28px' },
+        },
+      },
+    }
+  </script>
+  <!-- CSS -->
+  <link rel="stylesheet" href="assets/css/style.css" />
+  <!-- Iconify -->
+  <script src="https://code.iconify.design/iconify-icon/2.1.0/iconify-icon.min.js" defer></script>
+  <!-- GSAP -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js" defer></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js" defer></script>
+  <!-- Lenis -->
+  <script src="https://cdn.jsdelivr.net/npm/lenis@1.1.13/dist/lenis.min.js" defer></script>
+  <!-- JsBarcode -->
+  <script src="https://cdn.jsdelivr.net/npm/jsbarcode@3.11.5/dist/JsBarcode.all.min.js" defer></script>
+</head>
+<body class="canvas-bg overflow-x-hidden">
+  <!-- Texture overlay -->
+  <div class="texture-overlay"></div>
+
+  <!-- ── Navigation ───────────────────────────────────────────── -->
+  <nav id="main-nav" class="fixed top-0 left-0 right-0 z-50 flex items-center justify-between px-6 lg:px-12 py-4 backdrop-blur-md transition-all duration-300" style="background: rgba(36,22,16,0.7)">
+    <a href="/" class="font-bold text-2xl text-white" style="font-family: 'Inter', sans-serif;">
+      KA<span style="color:#e8a33d">YA</span>
+    </a>
+    <div class="hidden md:flex items-center gap-1">
+      <a href="#hero" class="nav-pill">Beranda</a>
+      <a href="#menu" class="nav-pill">Menu</a>
+      <a href="#features" class="nav-pill">Tentang</a>
+      <a href="#story" class="nav-pill">Kisah Kami</a>
+    </div>
+    <a href="#menu" class="btn-primary text-sm">Pesan Sekarang</a>
+  </nav>
+
+  <!-- ── Hero Section ──────────────────────────────────────────── -->
+  <section id="hero" class="min-h-screen relative flex items-center pt-20">
+    <!-- Background glow -->
+    <div id="hero-bg-glow" class="absolute top-1/4 right-1/4 w-96 h-96 rounded-full opacity-20 pointer-events-none" style="background: radial-gradient(circle, #e8a33d 0%, transparent 70%); filter: blur(60px);"></div>
+    <div class="absolute top-1/2 left-10 w-64 h-64 rounded-full opacity-10 pointer-events-none" style="background: radial-gradient(circle, #c9821f 0%, transparent 70%); filter: blur(80px);"></div>
+
+    <div class="relative z-10 container mx-auto px-6 lg:px-12 py-16 hero-grid grid lg:grid-cols-[1fr_auto] gap-12 items-center">
+      <!-- Left: Text -->
+      <div class="max-w-xl">
+        <div id="hero-badge" class="tag-badge mb-6 opacity-0">
+          <span>★</span> Dibuka Setiap Hari 07.00 – 20.00
+        </div>
+        <h1 id="hero-title" class="opacity-0 text-6xl lg:text-7xl font-bold text-white leading-[1.05] tracking-tight mb-6" style="font-family:'Inter',sans-serif;">
+          Roti Segar,<br/>
+          <span style="color:#e8a33d">Dipanggang</span><br/>
+          Setiap Pagi
+        </h1>
+        <p id="hero-subtitle" class="opacity-0 text-lg text-white/60 mb-8 leading-relaxed max-w-md">
+          Nikmati cita rasa roti berkualitas tinggi yang dibuat dari bahan pilihan. Pesan online, ambil di toko — mudah dan praktis.
+        </p>
+        <div id="hero-ctas" class="opacity-0 flex flex-wrap gap-4">
+          <a href="#menu" class="btn-primary text-base px-8 py-3.5">
+            Pesan Sekarang
+          </a>
+          <a href="#menu" class="btn-outline text-base px-8 py-3.5">
+            Lihat Menu ↓
+          </a>
+        </div>
+      </div>
+
+      <!-- Right: Floating Cards -->
+      <div class="floating-cards relative w-80 h-96 hidden lg:block">
+        <!-- Card 1: Stok Hari Ini -->
+        <div class="float-stack-card float-card glass-card-lg absolute top-0 right-0 w-52 p-4 opacity-0">
+          <div class="flex items-center gap-2 mb-2">
+            <div class="w-7 h-7 rounded-lg flex items-center justify-center" style="background:rgba(232,163,61,0.2)">
+              <span style="color:#e8a33d; font-size:14px">📦</span>
+            </div>
+            <span class="text-white/50 text-xs">Stok Hari Ini</span>
+          </div>
+          <p id="hero-stock-count" class="text-white font-bold text-xl" style="font-family:'Inter',sans-serif;">— item</p>
+          <p class="text-white/40 text-xs mt-0.5">produk tersedia</p>
+        </div>
+
+        <!-- Card 2: Rating -->
+        <div class="float-stack-card float-card glass-card absolute top-20 left-0 w-44 p-4 opacity-0" style="animation-delay:-1s">
+          <div class="flex items-center gap-1 mb-1">
+            <span style="color:#e8a33d; font-size:12px">★★★★★</span>
+          </div>
+          <p class="text-white font-bold text-lg" style="font-family:'Inter',sans-serif;">4.9 / 5.0</p>
+          <p class="text-white/40 text-xs">dari 500+ ulasan</p>
+        </div>
+
+        <!-- Card 3: Menu Terlaris -->
+        <div class="float-stack-card float-card glass-card absolute top-48 right-4 w-52 p-4 opacity-0" style="animation-delay:-2s">
+          <p class="text-white/50 text-xs mb-1">🏆 Menu Terlaris</p>
+          <p id="hero-top-product" class="text-white font-semibold text-sm" style="font-family:'Inter',sans-serif;">Memuat...</p>
+          <div class="mt-2 h-1 rounded-full" style="background:rgba(232,163,61,0.2)">
+            <div class="h-1 rounded-full w-3/4" style="background:#e8a33d"></div>
+          </div>
+        </div>
+
+        <!-- Card 4: Cek Status -->
+        <div class="float-stack-card float-card glass-card-lg absolute bottom-0 left-4 right-4 p-4 opacity-0" style="animation-delay:-3s">
+          <p class="text-white/60 text-xs mb-2">🔍 Cek Status Pesanan</p>
+          <div class="flex gap-2">
+            <input id="hero-order-code" type="text" placeholder="KYA-YYYYMMDD-XXXX"
+              class="flex-1 text-xs px-3 py-2 rounded-lg text-white placeholder:text-white/30 focus:outline-none focus:ring-1"
+              style="background:rgba(255,255,255,0.12); border:1px solid rgba(255,255,255,0.15)" />
+            <button id="hero-check-btn" class="btn-primary text-xs px-3 py-2">Cek</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Scroll indicator -->
+    <div class="absolute bottom-8 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2 opacity-40">
+      <div class="w-5 h-8 rounded-full border border-white/40 flex items-start justify-center pt-1.5">
+        <div class="w-1 h-2 rounded-full bg-white animate-bounce"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── Trust / Stats Strip ───────────────────────────────────── -->
+  <section class="relative z-10 py-10 border-y border-white/10">
+    <div class="container mx-auto px-6 lg:px-12">
+      <div class="grid grid-cols-2 md:grid-cols-4 gap-6 text-center reveal-up">
+        <div>
+          <p class="text-3xl font-bold" style="color:#e8a33d; font-family:'Inter',sans-serif;" data-count="500">500+</p>
+          <p class="text-white/50 text-sm mt-1">Pelanggan Setia</p>
+        </div>
+        <div>
+          <p class="text-3xl font-bold" style="color:#e8a33d; font-family:'Inter',sans-serif;" data-count="10">10+</p>
+          <p class="text-white/50 text-sm mt-1">Tahun Pengalaman</p>
+        </div>
+        <div>
+          <p class="text-3xl font-bold" style="color:#e8a33d; font-family:'Inter',sans-serif;" data-count="50">50+</p>
+          <p class="text-white/50 text-sm mt-1">Varian Roti</p>
+        </div>
+        <div>
+          <p class="text-3xl font-bold" style="color:#e8a33d; font-family:'Inter',sans-serif;" data-count="100">100%</p>
+          <p class="text-white/50 text-sm mt-1">Bahan Segar</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── Kategori Marquee ──────────────────────────────────────── -->
+  <section class="py-8 overflow-hidden border-b border-white/10">
+    <div class="flex">
+      <div class="marquee-inner flex items-center gap-10 whitespace-nowrap">
+        <!-- repeat twice for seamless loop -->
+        <template id="marquee-items">
+          <div class="flex items-center gap-3 opacity-50 hover:opacity-80 transition-opacity">
+            <span class="text-2xl">🍞</span><span class="text-white font-medium text-sm">Roti Tawar</span>
+          </div>
+          <div class="flex items-center gap-3 opacity-50 hover:opacity-80 transition-opacity">
+            <span class="text-2xl">🥐</span><span class="text-white font-medium text-sm">Roti Manis</span>
+          </div>
+          <div class="flex items-center gap-3 opacity-50 hover:opacity-80 transition-opacity">
+            <span class="text-2xl">🥖</span><span class="text-white font-medium text-sm">Pastry</span>
+          </div>
+          <div class="flex items-center gap-3 opacity-50 hover:opacity-80 transition-opacity">
+            <span class="text-2xl">🎂</span><span class="text-white font-medium text-sm">Kue</span>
+          </div>
+          <div class="flex items-center gap-3 opacity-50 hover:opacity-80 transition-opacity">
+            <span class="text-2xl">☕</span><span class="text-white font-medium text-sm">Minuman</span>
+          </div>
+          <div class="w-px h-6 opacity-20" style="background:white"></div>
+        </template>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── Menu / Katalog ───────────────────────────────────────── -->
+  <section id="menu" class="py-20 relative z-10">
+    <div class="container mx-auto px-6 lg:px-12">
+      <div class="text-center mb-12 reveal-up">
+        <p class="section-label mb-3">Menu Kami</p>
+        <h2 class="text-4xl lg:text-5xl font-bold text-white mb-4" style="font-family:'Inter',sans-serif;">
+          Pilihan Roti <span style="color:#e8a33d">Terlezat</span>
+        </h2>
+        <p class="text-white/50 max-w-md mx-auto">
+          Semua produk dibuat segar setiap pagi menggunakan bahan berkualitas pilihan.
+        </p>
+      </div>
+
+      <!-- Product Grid -->
+      <div id="product-grid" class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+        <!-- Loaded dynamically by api.js -->
+        <div class="col-span-full text-center py-16 opacity-40">
+          <div class="inline-block w-10 h-10 rounded-full border-2 border-white/40 border-t-transparent animate-spin mb-4"></div>
+          <p class="text-white">Memuat menu...</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── Features ─────────────────────────────────────────────── -->
+  <section id="features" class="py-20 relative z-10 border-t border-white/10">
+    <div class="container mx-auto px-6 lg:px-12">
+      <div class="text-center mb-12 reveal-up">
+        <p class="section-label mb-3">Kenapa KAYA?</p>
+        <h2 class="text-4xl font-bold text-white" style="font-family:'Inter',sans-serif;">Keunggulan Kami</h2>
+      </div>
+      <div class="grid md:grid-cols-3 gap-6">
+        <div class="feature-card glass-card-lg p-8 text-center">
+          <div class="w-16 h-16 rounded-2xl flex items-center justify-center text-3xl mx-auto mb-4" style="background:rgba(232,163,61,0.15)">🌾</div>
+          <h3 class="text-white font-bold text-xl mb-3" style="font-family:'Inter',sans-serif;">Selalu Segar</h3>
+          <p class="text-white/50 leading-relaxed">Dipanggang setiap pagi, tidak ada stok kemarin. Kami hanya menjual roti yang baru keluar dari oven.</p>
+        </div>
+        <div class="feature-card glass-card-lg p-8 text-center">
+          <div class="w-16 h-16 rounded-2xl flex items-center justify-center text-3xl mx-auto mb-4" style="background:rgba(232,163,61,0.15)">📦</div>
+          <h3 class="text-white font-bold text-xl mb-3" style="font-family:'Inter',sans-serif;">Bisa Pre-order</h3>
+          <p class="text-white/50 leading-relaxed">Pesan online, ambil di toko — tidak perlu mengantri. Dapatkan barcode digital sebagai bukti pesanan Anda.</p>
+        </div>
+        <div class="feature-card glass-card-lg p-8 text-center">
+          <div class="w-16 h-16 rounded-2xl flex items-center justify-center text-3xl mx-auto mb-4" style="background:rgba(232,163,61,0.15)">💳</div>
+          <h3 class="text-white font-bold text-xl mb-3" style="font-family:'Inter',sans-serif;">Bayar Fleksibel</h3>
+          <p class="text-white/50 leading-relaxed">Bayar dengan cash, QRIS, kartu, atau transfer. Kami menerima semua metode pembayaran populer.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── Kisah Toko ────────────────────────────────────────────── -->
+  <section id="story" class="py-20 relative z-10 border-t border-white/10">
+    <div class="container mx-auto px-6 lg:px-12">
+      <div class="grid lg:grid-cols-2 gap-12 items-center">
+        <!-- Image placeholder -->
+        <div class="reveal-up">
+          <div class="rounded-xl2 overflow-hidden aspect-square max-w-md mx-auto lg:mx-0 flex items-center justify-center"
+            style="background: linear-gradient(135deg, #3a2415 0%, #241610 50%, #6b3a1f 100%);">
+            <div class="text-center p-8">
+              <div class="text-7xl mb-4">🏠</div>
+              <p class="text-white/30 text-sm">[ Ganti dengan foto toko asli ]</p>
+            </div>
+          </div>
+        </div>
+        <!-- Story text -->
+        <div class="reveal-up space-y-6">
+          <p class="section-label">Kisah Kami</p>
+          <h2 class="text-4xl font-bold text-white" style="font-family:'Inter',sans-serif;">
+            Dari Dapur Kecil<br/>
+            Menjadi <span style="color:#e8a33d">Pilihan Semua</span>
+          </h2>
+          <p class="text-white/60 leading-relaxed">
+            KAYA Bakery berdiri sejak 2014, dimulai dari dapur kecil keluarga dengan resep turun-temurun. Hari ini, kami melayani lebih dari 500 pelanggan setia setiap bulannya dengan 50+ varian roti dan kue pilihan.
+          </p>
+          <p class="text-white/60 leading-relaxed">
+            Setiap roti yang kami buat adalah buah dari dedikasi dan cinta terhadap seni membuat roti — tidak pernah menggunakan shortcut, selalu mengutamakan kualitas bahan.
+          </p>
+          <div class="grid grid-cols-3 gap-4 pt-4">
+            <div class="text-center glass-card p-4">
+              <p class="text-3xl font-bold" style="color:#e8a33d; font-family:'Inter',sans-serif;">2014</p>
+              <p class="text-white/40 text-xs mt-1">Tahun Berdiri</p>
+            </div>
+            <div class="text-center glass-card p-4">
+              <p class="text-3xl font-bold" style="color:#e8a33d; font-family:'Inter',sans-serif;">50+</p>
+              <p class="text-white/40 text-xs mt-1">Varian</p>
+            </div>
+            <div class="text-center glass-card p-4">
+              <p class="text-3xl font-bold" style="color:#e8a33d; font-family:'Inter',sans-serif;">500+</p>
+              <p class="text-white/40 text-xs mt-1">Pelanggan</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── Testimonial ───────────────────────────────────────────── -->
+  <section id="testimonials" class="py-20 relative z-10 border-t border-white/10">
+    <div class="container mx-auto px-6 lg:px-12">
+      <div class="text-center mb-12 reveal-up">
+        <p class="section-label mb-3">Kata Mereka</p>
+        <h2 class="text-4xl font-bold text-white" style="font-family:'Inter',sans-serif;">Pelanggan <span style="color:#e8a33d">Kami Berkata</span></h2>
+      </div>
+      <div class="grid md:grid-cols-3 gap-5">
+        <!-- Testimonials -->
+        <div class="testi-card glass-card p-6">
+          <div class="flex gap-0.5 mb-3" style="color:#e8a33d">★★★★★</div>
+          <p class="text-white/70 leading-relaxed mb-4">"Rotinya selalu fresh dan enak banget! Saya sudah langganan hampir 3 tahun. Pre-order via website juga sangat mudah."</p>
+          <div class="flex items-center gap-3">
+            <div class="w-8 h-8 rounded-full flex items-center justify-center font-bold text-sm" style="background:rgba(232,163,61,0.2); color:#e8a33d">A</div>
+            <div>
+              <p class="text-white font-semibold text-sm">Anisa R.</p>
+              <p class="text-white/30 text-xs">Pelanggan Tetap</p>
+            </div>
+          </div>
+        </div>
+        <div class="testi-card glass-card p-6">
+          <div class="flex gap-0.5 mb-3" style="color:#e8a33d">★★★★★</div>
+          <p class="text-white/70 leading-relaxed mb-4">"Croissantnya juara! Teman-teman kantor saya selalu minta bawain dari KAYA. Barcodenya keren, tinggal tunjukkan ke kasir."</p>
+          <div class="flex items-center gap-3">
+            <div class="w-8 h-8 rounded-full flex items-center justify-center font-bold text-sm" style="background:rgba(232,163,61,0.2); color:#e8a33d">B</div>
+            <div>
+              <p class="text-white font-semibold text-sm">Budi S.</p>
+              <p class="text-white/30 text-xs">Pelanggan 2 Tahun</p>
+            </div>
+          </div>
+        </div>
+        <div class="testi-card glass-card p-6">
+          <div class="flex gap-0.5 mb-3" style="color:#e8a33d">★★★★☆</div>
+          <p class="text-white/70 leading-relaxed mb-4">"Pelayanannya ramah, produknya beragam. Pre-order via website sangat memudahkan — tidak perlu antri panjang saat peak hour."</p>
+          <div class="flex items-center gap-3">
+            <div class="w-8 h-8 rounded-full flex items-center justify-center font-bold text-sm" style="background:rgba(232,163,61,0.2); color:#e8a33d">C</div>
+            <div>
+              <p class="text-white font-semibold text-sm">Citra M.</p>
+              <p class="text-white/30 text-xs">Pelanggan Baru</p>
+            </div>
+          </div>
+        </div>
+        <div class="testi-card glass-card p-6">
+          <div class="flex gap-0.5 mb-3" style="color:#e8a33d">★★★★★</div>
+          <p class="text-white/70 leading-relaxed mb-4">"Roti gandum kesukaanku ada di sini! Texturnya sempurna, tidak terlalu padat dan rasanya natural."</p>
+          <div class="flex items-center gap-3">
+            <div class="w-8 h-8 rounded-full flex items-center justify-center font-bold text-sm" style="background:rgba(232,163,61,0.2); color:#e8a33d">D</div>
+            <div>
+              <p class="text-white font-semibold text-sm">Dewi P.</p>
+              <p class="text-white/30 text-xs">Health Enthusiast</p>
+            </div>
+          </div>
+        </div>
+        <div class="testi-card glass-card p-6">
+          <div class="flex gap-0.5 mb-3" style="color:#e8a33d">★★★★★</div>
+          <p class="text-white/70 leading-relaxed mb-4">"Order untuk arisan selalu ke sini. Konsisten, tepat waktu, dan packagingnya rapih. Highly recommended!"</p>
+          <div class="flex items-center gap-3">
+            <div class="w-8 h-8 rounded-full flex items-center justify-center font-bold text-sm" style="background:rgba(232,163,61,0.2); color:#e8a33d">E</div>
+            <div>
+              <p class="text-white font-semibold text-sm">Eka N.</p>
+              <p class="text-white/30 text-xs">Pelanggan 4 Tahun</p>
+            </div>
+          </div>
+        </div>
+        <div class="testi-card glass-card p-6">
+          <div class="flex gap-0.5 mb-3" style="color:#e8a33d">★★★★★</div>
+          <p class="text-white/70 leading-relaxed mb-4">"Anak-anak saya suka banget roti coklat di sini. Sekarang sudah bisa pesan dari rumah, makin praktis!"</p>
+          <div class="flex items-center gap-3">
+            <div class="w-8 h-8 rounded-full flex items-center justify-center font-bold text-sm" style="background:rgba(232,163,61,0.2); color:#e8a33d">F</div>
+            <div>
+              <p class="text-white font-semibold text-sm">Fani H.</p>
+              <p class="text-white/30 text-xs">Ibu Rumah Tangga</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── CTA Section ────────────────────────────────────────────── -->
+  <section class="py-20 relative z-10 border-t border-white/10 text-center">
+    <div class="container mx-auto px-6 reveal-up">
+      <h2 class="text-4xl lg:text-5xl font-bold text-white mb-4" style="font-family:'Inter',sans-serif;">
+        Siap Menikmati <span style="color:#e8a33d">Roti Segar?</span>
+      </h2>
+      <p class="text-white/50 mb-8 max-w-md mx-auto">Pesan sekarang dan dapatkan barcode digital. Tinggal tunjukkan ke kasir, selesai!</p>
+      <a href="#menu" class="btn-primary text-lg px-10 py-4 glow-pulse inline-flex">
+        Mulai Pre-order Sekarang
+      </a>
+    </div>
+  </section>
+
+  <!-- ── Footer ─────────────────────────────────────────────────── -->
+  <footer class="border-t border-white/10 py-12 relative z-10">
+    <div class="container mx-auto px-6 lg:px-12">
+      <div class="grid md:grid-cols-3 gap-8 mb-8">
+        <div>
+          <h3 class="font-bold text-2xl text-white mb-2" style="font-family:'Inter',sans-serif;">KA<span style="color:#e8a33d">YA</span></h3>
+          <p class="text-white/40 text-sm leading-relaxed">Roti segar berkualitas tinggi, dipanggang setiap pagi dengan penuh cinta.</p>
+        </div>
+        <div>
+          <h4 class="text-white font-semibold mb-3 text-sm">Informasi Toko</h4>
+          <div class="space-y-2 text-white/40 text-sm">
+            <p>📍 Jl. Roti No. 1, Jakarta (ganti dengan alamat asli)</p>
+            <p>🕐 Buka: 07.00 – 20.00 WIB</p>
+            <p>📅 Setiap hari, termasuk hari libur</p>
+          </div>
+        </div>
+        <div>
+          <h4 class="text-white font-semibold mb-3 text-sm">Hubungi Kami</h4>
+          <div class="space-y-2 text-sm">
+            <a href="https://wa.me/6281234567890" target="_blank"
+              class="flex items-center gap-2 text-white/40 hover:text-white transition-colors">
+              <span>📱</span> WhatsApp Kami
+            </a>
+            <a href="order-status.html" class="flex items-center gap-2 text-white/40 hover:text-white transition-colors">
+              <span>🔍</span> Cek Status Pesanan
+            </a>
+          </div>
+        </div>
+      </div>
+      <div class="border-t border-white/10 pt-6 text-center text-white/30 text-sm">
+        &copy; 2026 KAYA Bakery. All rights reserved. Made with ❤️ in Indonesia.
+      </div>
+    </div>
+  </footer>
+
+  <!-- ── Floating Cart Button ───────────────────────────────────── -->
+  <button id="cart-btn"
+    class="fixed bottom-6 right-6 z-40 w-14 h-14 rounded-full flex items-center justify-center shadow-2xl transition-all hover:scale-110 active:scale-95 glow-pulse"
+    style="background:#e8a33d; color:#241610;">
+    <span class="text-2xl">🛒</span>
+    <span id="cart-badge" class="absolute -top-1 -right-1 w-5 h-5 rounded-full text-white text-xs font-bold flex items-center justify-center" style="background:#e0654f; display:none">0</span>
+  </button>
+
+  <!-- ── Cart Drawer ─────────────────────────────────────────────── -->
+  <div id="cart-overlay" class="fixed inset-0 z-40 overlay" style="background:rgba(0,0,0,0.5)"></div>
+  <div id="cart-drawer" class="cart-drawer fixed top-0 right-0 bottom-0 z-50 w-full max-w-sm flex flex-col" style="background:#241610; border-left:1px solid rgba(255,255,255,0.12)">
+    <div class="flex items-center justify-between p-5 border-b border-white/10">
+      <h3 class="text-white font-bold text-lg" style="font-family:'Inter',sans-serif;">Keranjang Belanja</h3>
+      <button id="close-cart" class="text-white/50 hover:text-white transition-colors text-2xl leading-none">&times;</button>
+    </div>
+
+    <div class="flex-1 overflow-y-auto p-4">
+      <div id="cart-items" class="text-white/50 text-sm text-center py-12">Keranjang masih kosong</div>
+    </div>
+
+    <div class="p-5 border-t border-white/10 space-y-4">
+      <!-- Customer info -->
+      <div>
+        <input id="customer-name" type="text" placeholder="Nama Anda (opsional)"
+          class="w-full px-4 py-2.5 rounded-lg text-white text-sm placeholder:text-white/30 focus:outline-none focus:ring-1 focus:ring-primary/40"
+          style="background:rgba(255,255,255,0.1); border:1px solid rgba(255,255,255,0.15)" />
+      </div>
+      <input id="customer-phone" type="tel" placeholder="No. HP (opsional)"
+        class="w-full px-4 py-2.5 rounded-lg text-white text-sm placeholder:text-white/30 focus:outline-none"
+        style="background:rgba(255,255,255,0.1); border:1px solid rgba(255,255,255,0.15)" />
+      <!-- Total -->
+      <div class="flex justify-between items-center">
+        <span class="text-white/60">Total</span>
+        <span id="cart-total" class="text-white font-bold text-xl" style="color:#e8a33d">Rp 0</span>
+      </div>
+      <button id="checkout-btn" class="btn-primary w-full justify-center py-3.5 text-base rounded-xl2">
+        Lanjut ke Pembayaran →
+      </button>
+    </div>
+  </div>
+
+  <!-- ── Payment Modal ───────────────────────────────────────────── -->
+  <div id="modal-backdrop" class="fixed inset-0 z-50 overlay flex items-center justify-center p-4" style="background:rgba(0,0,0,0.6)">
+    <!-- Payment Modal -->
+    <div id="payment-modal-wrap" class="modal-wrap w-full max-w-md glass-card-lg p-6 text-white">
+      <div class="flex items-center justify-between mb-5">
+        <h3 class="font-bold text-xl" style="font-family:'Inter',sans-serif;">Konfirmasi Pembayaran</h3>
+        <button id="close-payment" class="text-white/50 hover:text-white text-2xl leading-none">&times;</button>
+      </div>
+
+      <!-- Order Summary -->
+      <div class="bg-white/5 rounded-xl p-4 mb-4 space-y-1 max-h-40 overflow-y-auto">
+        <div id="order-summary"></div>
+        <div class="border-t border-white/10 mt-2 pt-2 flex justify-between font-bold">
+          <span>Total</span>
+          <span id="pay-total" style="color:#e8a33d">Rp 0</span>
+        </div>
+      </div>
+
+      <!-- Payment method -->
+      <p class="text-white/50 text-xs mb-2">Metode Pembayaran (simulasi)</p>
+      <div class="grid grid-cols-2 gap-2 mb-5">
+        <label class="flex items-center gap-2 p-3 rounded-lg cursor-pointer" style="background:rgba(255,255,255,0.08); border:1px solid rgba(255,255,255,0.15)">
+          <input type="radio" name="pay-method" value="cash" checked class="accent-primary" /> Cash
+        </label>
+        <label class="flex items-center gap-2 p-3 rounded-lg cursor-pointer" style="background:rgba(255,255,255,0.08); border:1px solid rgba(255,255,255,0.15)">
+          <input type="radio" name="pay-method" value="qris" class="accent-primary" /> QRIS
+        </label>
+        <label class="flex items-center gap-2 p-3 rounded-lg cursor-pointer" style="background:rgba(255,255,255,0.08); border:1px solid rgba(255,255,255,0.15)">
+          <input type="radio" name="pay-method" value="transfer" class="accent-primary" /> Transfer
+        </label>
+        <label class="flex items-center gap-2 p-3 rounded-lg cursor-pointer" style="background:rgba(255,255,255,0.08); border:1px solid rgba(255,255,255,0.15)">
+          <input type="radio" name="pay-method" value="card" class="accent-primary" /> Kartu
+        </label>
+      </div>
+
+      <button id="pay-btn" class="btn-primary w-full justify-center py-4 text-base rounded-xl2">
+        Bayar Sekarang Rp 0
+      </button>
+    </div>
+
+    <!-- Barcode Modal -->
+    <div id="barcode-modal-wrap" class="modal-wrap w-full max-w-md glass-card-lg p-6 text-white" style="display:none;">
+      <div class="text-center">
+        <div class="w-14 h-14 rounded-full flex items-center justify-center mx-auto mb-4" style="background:rgba(127,191,106,0.15)">
+          <span class="text-3xl">✓</span>
+        </div>
+        <h3 class="font-bold text-2xl mb-1" style="font-family:'Inter',sans-serif; color:#7fbf6a">Pesanan Dikonfirmasi!</h3>
+        <p class="text-white/50 text-sm mb-5">Tunjukkan barcode ini di toko saat pengambilan</p>
+
+        <div class="barcode-container mx-auto max-w-xs mb-4">
+          <svg id="order-barcode" class="w-full"></svg>
+          <p id="barcode-order-code" class="font-mono font-bold text-canvas-alt text-sm mt-1"></p>
+          <p id="barcode-total" class="font-bold text-lg mt-1" style="color:#e8a33d"></p>
+        </div>
+
+        <p class="text-white/40 text-xs mb-5">Simpan barcode ini dan tunjukkan kepada kasir saat mengambil pesanan.</p>
+
+        <div class="flex gap-3">
+          <button id="download-barcode" class="btn-outline flex-1 text-white">
+            💾 Simpan Barcode
+          </button>
+          <button id="close-barcode" class="btn-primary flex-1 justify-center">
+            Tutup
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── Scripts ────────────────────────────────────────────────── -->
+  <script>
+    // Initialize marquee with double content
+    window.addEventListener('DOMContentLoaded', () => {
+      const tmpl = document.getElementById('marquee-items')
+      const inner = document.querySelector('.marquee-inner')
+      if (tmpl && inner) {
+        const items = tmpl.content.cloneNode(true)
+        const items2 = tmpl.content.cloneNode(true)
+        inner.appendChild(items)
+        inner.appendChild(items2)
+      }
+
+      // Wire barcode modal toggle based on which modal is active
+      document.getElementById('modal-backdrop').addEventListener('click', function(e) {
+        if (e.target === this) {
+          closePaymentModal()
+          closeBarcodeModal()
+        }
+      })
+    })
+
+    // Override showBarcodeModal to swap visible modal
+    function showBarcodeModal(order) {
+      document.getElementById('payment-modal-wrap').style.display = 'none'
+      const barcodeWrap = document.getElementById('barcode-modal-wrap')
+      barcodeWrap.style.display = 'block'
+      document.getElementById('barcode-order-code').textContent = order.order_code
+      const total = order.total
+      const formatted = new Intl.NumberFormat('id-ID', { style:'currency', currency:'IDR', minimumFractionDigits:0 }).format(total)
+      document.getElementById('barcode-total').textContent = formatted
+
+      const svg = document.getElementById('order-barcode')
+      if (svg && window.JsBarcode) {
+        JsBarcode(svg, order.order_code, {
+          format: 'CODE128', width: 2, height: 60,
+          displayValue: false, background: '#ffffff', lineColor: '#241610', margin: 10
+        })
+      }
+      document.getElementById('download-barcode').onclick = () => downloadBarcode(order.order_code)
+      document.getElementById('barcode-modal-wrap').classList.add('open')
+    }
+
+    function closeBarcodeModal() {
+      document.getElementById('barcode-modal-wrap').style.display = 'none'
+      document.getElementById('modal-backdrop').classList.remove('open')
+    }
+  </script>
+  <script src="assets/js/api.js" defer></script>
+  <script src="assets/js/main.js" defer></script>
+</body>
+</html>

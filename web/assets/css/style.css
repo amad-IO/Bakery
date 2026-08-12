@@ -1,0 +1,288 @@
+/* ============================================================
+   KAYA Bakery — Custom Styles
+   Tailwind handles utility classes; this file adds:
+   - CSS custom properties (design tokens)
+   - Keyframe animations
+   - Glassmorphism base
+   - Scrollbar customization
+   ============================================================ */
+
+/* ── Design Tokens ─────────────────────────────────────────── */
+:root {
+  --primary:       #e8a33d;
+  --primary-dark:  #c9821f;
+  --canvas:        #241610;
+  --canvas-alt:    #3a2415;
+  --cream:         #f3ede3;
+  --glass-bg:      rgba(255,255,255,0.09);
+  --glass-border:  rgba(255,255,255,0.14);
+  --glass-blur:    12px;
+  --text-muted:    rgba(255,255,255,0.6);
+  --radius-lg:     28px;
+  --radius-pill:   999px;
+  --transition:    400ms cubic-bezier(0.4,0,0.2,1);
+}
+
+/* ── Base ──────────────────────────────────────────────────── */
+*, *::before, *::after { box-sizing: border-box; }
+
+html { scroll-behavior: smooth; }
+
+body {
+  background: var(--cream);
+  color: #fff;
+  font-family: 'Inter', sans-serif;
+  overflow-x: hidden;
+}
+
+h1, h2, h3, h4, h5, h6,
+.font-heading {
+  font-family: 'Geist', 'Inter', sans-serif;
+}
+
+/* ── Scrollbar ─────────────────────────────────────────────── */
+::-webkit-scrollbar { width: 6px; }
+::-webkit-scrollbar-track { background: var(--canvas); }
+::-webkit-scrollbar-thumb {
+  background: var(--primary);
+  border-radius: 999px;
+}
+
+/* ── Glass Card ────────────────────────────────────────────── */
+.glass-card {
+  background: var(--glass-bg);
+  backdrop-filter: blur(var(--glass-blur));
+  -webkit-backdrop-filter: blur(var(--glass-blur));
+  border: 1px solid var(--glass-border);
+  border-radius: 16px;
+}
+
+.glass-card-lg {
+  background: var(--glass-bg);
+  backdrop-filter: blur(var(--glass-blur));
+  -webkit-backdrop-filter: blur(var(--glass-blur));
+  border: 1px solid var(--glass-border);
+  border-radius: var(--radius-lg);
+}
+
+/* ── Main Canvas ───────────────────────────────────────────── */
+.canvas-bg {
+  background: linear-gradient(135deg, var(--canvas) 0%, var(--canvas-alt) 100%);
+}
+
+/* ── Hatch Texture Overlay ─────────────────────────────────── */
+.texture-overlay {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+  background-image: repeating-linear-gradient(
+    115deg,
+    transparent,
+    transparent 28px,
+    rgba(255,255,255,0.015) 28px,
+    rgba(255,255,255,0.015) 29px
+  );
+}
+
+/* ── Buttons ───────────────────────────────────────────────── */
+.btn-primary {
+  background: var(--primary);
+  color: var(--canvas-alt);
+  border: none;
+  border-radius: var(--radius-pill);
+  padding: 12px 28px;
+  font-family: 'Geist', sans-serif;
+  font-weight: 600;
+  font-size: 0.95rem;
+  cursor: pointer;
+  transition: var(--transition);
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  text-decoration: none;
+}
+.btn-primary:hover {
+  background: var(--primary-dark);
+  transform: translateY(-3px);
+  box-shadow: 0 12px 30px rgba(232,163,61,0.35);
+}
+
+.btn-outline {
+  background: transparent;
+  color: #fff;
+  border: 1px solid rgba(255,255,255,0.35);
+  border-radius: var(--radius-pill);
+  padding: 12px 28px;
+  font-family: 'Geist', sans-serif;
+  font-weight: 500;
+  font-size: 0.95rem;
+  cursor: pointer;
+  transition: var(--transition);
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  text-decoration: none;
+}
+.btn-outline:hover {
+  background: rgba(255,255,255,0.1);
+  transform: translateY(-3px);
+}
+
+/* ── Tag Badge ─────────────────────────────────────────────── */
+.tag-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: rgba(232,163,61,0.12);
+  border: 1px solid rgba(232,163,61,0.4);
+  border-radius: var(--radius-pill);
+  color: var(--primary);
+  font-size: 0.78rem;
+  font-weight: 600;
+  font-family: 'Geist', sans-serif;
+  padding: 5px 14px;
+  letter-spacing: 0.02em;
+}
+
+/* ── Section Label ─────────────────────────────────────────── */
+.section-label {
+  font-family: 'Geist', sans-serif;
+  font-size: 0.7rem;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--primary);
+}
+
+/* ── Nav ───────────────────────────────────────────────────── */
+.nav-pill {
+  padding: 6px 16px;
+  border-radius: var(--radius-pill);
+  border: 1px solid rgba(255,255,255,0.15);
+  color: rgba(255,255,255,0.8);
+  font-size: 0.875rem;
+  font-family: 'Geist', sans-serif;
+  text-decoration: none;
+  transition: var(--transition);
+}
+.nav-pill:hover {
+  background: rgba(255,255,255,0.1);
+  color: #fff;
+  transform: scale(1.04);
+}
+
+/* ── Keyframes ─────────────────────────────────────────────── */
+@keyframes float-y {
+  0%, 100% { transform: translateY(0); }
+  50%       { transform: translateY(-12px); }
+}
+@keyframes float-y-slow {
+  0%, 100% { transform: translateY(0) rotate(-1deg); }
+  50%       { transform: translateY(-8px) rotate(1deg); }
+}
+@keyframes marquee {
+  0%   { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
+}
+@keyframes pulse-glow {
+  0%, 100% { box-shadow: 0 0 20px rgba(232,163,61,0.2); }
+  50%       { box-shadow: 0 0 40px rgba(232,163,61,0.5); }
+}
+@keyframes spin-slow {
+  to { transform: rotate(360deg); }
+}
+
+/* ── Floating Cards ────────────────────────────────────────── */
+.float-card { animation: float-y 4s ease-in-out infinite; }
+.float-card-slow { animation: float-y-slow 6s ease-in-out infinite; }
+.float-card:nth-child(2) { animation-delay: -1.5s; }
+.float-card:nth-child(3) { animation-delay: -3s; }
+.float-card:nth-child(4) { animation-delay: -4.5s; }
+
+/* ── Marquee ───────────────────────────────────────────────── */
+.marquee-inner { animation: marquee 22s linear infinite; }
+.marquee-inner:hover { animation-play-state: paused; }
+
+/* ── Product Card Hover ────────────────────────────────────── */
+.product-card {
+  transition: var(--transition);
+}
+.product-card:hover {
+  transform: translateY(-6px);
+}
+.product-card:hover .product-img {
+  transform: scale(1.04);
+}
+.product-img {
+  transition: transform 400ms ease;
+}
+
+/* ── Cart Drawer ───────────────────────────────────────────── */
+.cart-drawer {
+  transition: transform 400ms cubic-bezier(0.4,0,0.2,1);
+  transform: translateX(100%);
+}
+.cart-drawer.open {
+  transform: translateX(0);
+}
+
+/* ── Overlay ───────────────────────────────────────────────── */
+.overlay {
+  transition: opacity 300ms ease;
+  opacity: 0;
+  pointer-events: none;
+}
+.overlay.open {
+  opacity: 1;
+  pointer-events: all;
+}
+
+/* ── Modal ─────────────────────────────────────────────────── */
+.modal-wrap {
+  transition: opacity 250ms ease, transform 250ms ease;
+  opacity: 0;
+  transform: translateY(20px);
+  pointer-events: none;
+}
+.modal-wrap.open {
+  opacity: 1;
+  transform: translateY(0);
+  pointer-events: all;
+}
+
+/* ── Barcode area ──────────────────────────────────────────── */
+.barcode-container {
+  background: #fff;
+  border-radius: 16px;
+  padding: 24px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+}
+
+/* ── Amber Glow Pulse ──────────────────────────────────────── */
+.glow-pulse {
+  animation: pulse-glow 3s ease-in-out infinite;
+}
+
+/* ── Reduced Motion ────────────────────────────────────────── */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+  .float-card,
+  .float-card-slow,
+  .marquee-inner {
+    animation: none !important;
+  }
+}
+
+/* ── Responsive ────────────────────────────────────────────── */
+@media (max-width: 768px) {
+  .hero-grid { grid-template-columns: 1fr; }
+  .floating-cards { display: none; }
+}

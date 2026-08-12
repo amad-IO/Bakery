@@ -1,181 +1,243 @@
-# KAYA Bakery — Monorepo
+# KAYA Bakery 🥖
 
-> Sistem manajemen toko roti full-stack: Landing Page Publik · Dashboard Admin & Kasir · REST API
-
-[![CI · Backend](https://github.com/amad-IO/Bakery/actions/workflows/ci-backend.yml/badge.svg)](https://github.com/amad-IO/Bakery/actions/workflows/ci-backend.yml)
-[![CI · Dashboard](https://github.com/amad-IO/Bakery/actions/workflows/ci-dashboard.yml/badge.svg)](https://github.com/amad-IO/Bakery/actions/workflows/ci-dashboard.yml)
+Full-stack bakery management and ordering system — Go REST API backend, React + TypeScript admin/cashier dashboard, and a public HTML landing page with pre-order flow.
 
 ---
 
-## 📦 Struktur Monorepo
+## Tech Stack
+
+| Layer | Technology |
+|-------|-----------|
+| **Backend** | Go 1.22 · Gin · GORM · PostgreSQL |
+| **Dashboard** | React 18 · Vite · TypeScript · Tailwind CSS 3 |
+| **Landing Page** | HTML · Tailwind CDN · GSAP · Lenis |
+| **Auth** | JWT (RS256-compatible, HS256 default) |
+| **Barcode** | JsBarcode (Code128) |
+| **Infrastructure** | Docker Compose |
+
+---
+
+## Monorepo Structure
 
 ```
-kaya-bakery/
-├── backend/          # Go + Gin REST API
-├── dashboard/        # React + Vite + TypeScript SPA (Admin & Kasir)
-├── web/              # Landing page publik (HTML + Tailwind + GSAP)
-├── docker-compose.yml
-├── .github/
-│   ├── workflows/
-│   │   ├── ci-backend.yml      # CI Go — test & build
-│   │   ├── ci-dashboard.yml    # CI React — type-check & build
-│   │   ├── ci-web.yml          # CI Web — validasi HTML
-│   │   └── cd-deploy.yml       # CD — deploy ke production
-│   ├── ISSUE_TEMPLATE/
-│   └── pull_request_template.md
-├── API.md            # Spesifikasi REST API
-├── ARCHITECTURE.md   # Arsitektur & tech stack
-├── DESIGN.md         # Design system
-├── ERD.md            # Skema database
-├── ROLES.md          # Matriks hak akses
-└── USER-FLOWS.md     # Alur penggunaan
+shoop/
+├── backend/           # Go REST API
+│   ├── cmd/api/       # Server entrypoint
+│   ├── cmd/seed/      # Admin seed CLI
+│   └── internal/
+│       ├── config/
+│       ├── db/
+│       ├── handlers/
+│       ├── middleware/
+│       ├── models/
+│       ├── response/
+│       ├── routes/
+│       ├── services/
+│       └── utils/
+├── dashboard/         # React SPA (admin + kasir)
+│   └── src/
+│       ├── lib/       # API client, Auth context
+│       ├── pages/
+│       │   ├── admin/ # Dashboard, Products, Orders, Cashiers, Logs, Settings
+│       │   ├── auth/  # Login
+│       │   └── kasir/ # POS, ScanOrder, AddProduct
+│       └── routes/
+├── web/               # Static landing page
+│   ├── index.html
+│   ├── order-status.html
+│   └── assets/
+│       ├── css/style.css
+│       └── js/
+│           ├── api.js   # Cart, API calls, barcode
+│           └── main.js  # GSAP + Lenis animations
+└── docker-compose.yml
 ```
 
 ---
 
-## 🚀 Quick Start (Local Dev)
+## Prerequisites
 
-### Prerequisites
-- [Docker & Docker Compose](https://docs.docker.com/get-docker/)
-- [Go 1.22+](https://go.dev/dl/)
-- [Node.js 20+](https://nodejs.org/)
+- **Go** 1.22+ (or use bundled `go_sdk/`)
+- **Node.js** 18+ and npm
+- **Docker** & Docker Compose
+- **PostgreSQL** 15+ (via Docker or local)
 
-### 1. Clone & Setup Environment
+---
 
-```bash
-git clone https://github.com/amad-IO/Bakery.git
-cd kaya-bakery
+## 1. Backend Setup
 
-# Backend env
-cp backend/.env.example backend/.env
-# Edit backend/.env sesuai kebutuhan (JWT_SECRET wajib diisi)
-
-# Dashboard env
-cp dashboard/.env.example dashboard/.env
-```
-
-### 2. Jalankan Database & Backend (Docker)
+### Copy environment file
 
 ```bash
-docker-compose up -d postgres
-
-# Seed akun admin pertama
 cd backend
-go run ./cmd/seed
-
-# Jalankan backend
-go run ./cmd/api
-# → API berjalan di http://localhost:8080
+cp .env.example .env
 ```
 
-Atau jalankan keduanya sekaligus:
+Edit `.env` with your values:
+
+```env
+DB_HOST=localhost
+DB_PORT=5432
+DB_USER=kaya_user
+DB_PASSWORD=kaya_pass
+DB_NAME=kaya_bakery
+JWT_SECRET=change-me-in-production
+SERVER_PORT=8080
+```
+
+### Start database with Docker
 
 ```bash
-docker-compose up -d
+# From repo root
+docker-compose up -d db
 ```
 
-### 3. Jalankan Dashboard (Dev Server)
+### Run database migration + seed admin
+
+```bash
+cd backend
+
+# Go binary (Windows, bundled SDK)
+$env:PATH = "e:\work\shoop\go_sdk\go\bin;$env:PATH"
+$env:GOPATH = "e:\work\shoop\go"
+$env:GOMODCACHE = "e:\work\shoop\go\pkg\mod"
+
+go run ./cmd/seed
+```
+
+This creates the admin account:
+- **Email:** `admin@kayabakery.id`
+- **Password:** `admin123`
+
+### Start backend server
+
+```bash
+go run ./cmd/api
+# Server runs on http://localhost:8080
+```
+
+### Or run everything with Docker Compose
+
+```bash
+docker-compose up --build
+```
+
+---
+
+## 2. Dashboard Setup
 
 ```bash
 cd dashboard
+
+# Copy env
+cp .env.example .env
+# Edit VITE_API_BASE_URL=http://localhost:8080/api/v1
+
+# Install deps
 npm install
+
+# Dev server
 npm run dev
-# → Dashboard berjalan di http://localhost:5173
+# Opens at http://localhost:5173
 ```
 
-### 4. Buka Landing Page
+### Login
+
+Navigate to `http://localhost:5173/login`
+
+| Role | Email | Password |
+|------|-------|----------|
+| Admin | `admin@kayabakery.id` | `admin123` |
+| Kasir | (dibuat melalui Admin > Kasir) | (diset saat buat akun) |
+
+### Dashboard Features
+
+**Admin (`/admin/*`)**
+- Dashboard overview dengan revenue charts dan statistik real-time
+- Manajemen Produk (CRUD, soft-delete, stok badge)
+- Daftar Pesanan dengan filter status/tipe/tanggal
+- Manajemen Kasir (buat, aktifkan/nonaktifkan)
+- Log Aktivitas (semua mutasi tercatat)
+- Pengaturan Toko (nama, jam, alamat, WhatsApp)
+
+**Kasir (`/kasir/*`)**
+- **POS** — product grid tap-to-add, cart panel, proses bayar, barcode receipt
+- **Scan Pesanan** — cari pre-order by kode, konfirmasi bayar
+- **Tambah Produk** — form 2-step: buat produk → set stok awal
+
+---
+
+## 3. Landing Page
+
+Tidak perlu build step — buka langsung di browser:
+
+```
+web/index.html
+```
+
+Pastikan backend berjalan di `localhost:8080`. Landing page akan:
+- Load produk live dari API
+- Menampilkan produk habis dengan overlay "Stok Habis"
+- Mengizinkan pre-order dengan flow: pilih produk → isi nama/HP → mock payment → tampilkan barcode Code128
+
+### Cek status pesanan
+
+Buka `web/order-status.html` atau klik link di halaman utama.
+
+---
+
+## 4. API Overview
+
+Base URL: `http://localhost:8080/api/v1`
+
+| Method | Path | Auth | Description |
+|--------|------|------|-------------|
+| `POST` | `/auth/login` | — | Login, returns JWT |
+| `GET` | `/products` | — | List produk publik |
+| `GET` | `/categories` | — | List kategori |
+| `POST` | `/orders` | — | Buat pre-order |
+| `POST` | `/orders/:id/pay_mock` | — | Simulasi bayar |
+| `GET` | `/orders/:code` | — | Cek status pesanan |
+| `POST` | `/pos/orders` | kasir/admin | POS walk-in order |
+| `PATCH` | `/pos/products/:id/stock` | kasir/admin | Update stok |
+| `GET` | `/admin/dashboard/stats` | admin | Statistik dashboard |
+| `GET` | `/admin/orders` | admin | Semua pesanan |
+| `GET` | `/admin/logs` | admin | Log aktivitas |
+| `PATCH` | `/admin/settings` | admin | Update pengaturan |
+
+Lihat `API.md` untuk dokumentasi endpoint lengkap.
+
+---
+
+## 5. Business Rules
+
+- **Order code** format: `KYA-YYYYMMDD-XXXX`
+- **Harga** selalu diambil dari database, bukan dari client input
+- **Deduct stok** hanya terjadi saat status berubah ke `paid`
+- **Stock movements** dicatat setiap ada perubahan stok (type: `in` / `out`)
+- **Activity logs** dibuat untuk setiap mutasi yang dilakukan admin/kasir
+- Produk tidak bisa dihapus permanen — hanya di-deactivate (soft delete)
+
+---
+
+## 6. Development Commands
 
 ```bash
-# Cukup buka di browser langsung (static HTML)
-# → Buka web/index.html di browser
-# → Atau pakai live server: npx serve web
-npx serve web
-# → Landing page di http://localhost:3000
+# Backend: build binary
+go build -o api.exe ./cmd/api
+
+# Dashboard: production build
+npm run build
+
+# Run tests (jika ada)
+go test ./...
+
+# Docker: rebuild + restart
+docker-compose up --build -d
 ```
 
-### Default Credentials (Setelah Seed)
-
-| Role  | Email             | Password     |
-|-------|-------------------|--------------|
-| Admin | admin@kaya.id     | admin123     |
-
-> ⚠️ **Ganti password admin segera setelah login pertama di production!**
-
 ---
 
-## 🌿 Git Branching Strategy
+## License
 
-```
-main          ← production-ready, protected
-develop       ← integration branch
-feature/*     ← fitur baru (branch dari develop)
-fix/*         ← bug fix (branch dari develop atau main)
-release/*     ← persiapan release
-```
-
-**Branch protection rules** yang disarankan untuk `main`:
-- Require PR before merging
-- Require status checks: `CI · Backend`, `CI · Dashboard`
-- Restrict who can push directly
-
----
-
-## ⚙️ GitHub Actions CI/CD
-
-| Workflow | Trigger | Apa yang dilakukan |
-|---|---|---|
-| `ci-backend.yml` | Push/PR ke `main`/`develop` saat `backend/` berubah | Build Go + run tests dengan PostgreSQL |
-| `ci-dashboard.yml` | Push/PR ke `main`/`develop` saat `dashboard/` berubah | TypeScript check + Vite build |
-| `ci-web.yml` | Push/PR ke `main`/`develop` saat `web/` berubah | Validasi HTML files |
-| `cd-deploy.yml` | Push ke `main` | Deploy backend ke VPS, dashboard & web ke Vercel |
-
-### Secrets yang Dibutuhkan untuk CD
-
-Tambahkan di **Settings → Secrets and variables → Actions**:
-
-| Secret | Keterangan |
-|---|---|
-| `VPS_HOST` | IP / hostname VPS backend |
-| `VPS_USER` | Username SSH |
-| `VPS_SSH_KEY` | Private key SSH (PEM format) |
-| `VERCEL_TOKEN` | Token Vercel |
-| `VERCEL_ORG_ID` | ID organisasi Vercel |
-| `VERCEL_DASHBOARD_PROJECT_ID` | ID project dashboard di Vercel |
-| `VERCEL_WEB_PROJECT_ID` | ID project landing page di Vercel |
-| `VITE_API_BASE_URL` | URL API production, misal `https://api.kayabakery.id/api/v1` |
-
----
-
-## 📖 Dokumentasi
-
-| File | Isi |
-|---|---|
-| [`API.md`](./API.md) | Semua endpoint REST API |
-| [`ARCHITECTURE.md`](./ARCHITECTURE.md) | Tech stack & struktur folder |
-| [`ERD.md`](./ERD.md) | Skema database & diagram relasi |
-| [`ROLES.md`](./ROLES.md) | Matriks hak akses per role |
-| [`USER-FLOWS.md`](./USER-FLOWS.md) | Alur penggunaan tiap role |
-| [`DESIGN.md`](./DESIGN.md) | Design system (warna, tipografi, komponen) |
-
----
-
-## 🤝 Contributing
-
-1. Fork repo ini
-2. Buat branch dari `develop`: `git checkout -b feature/nama-fitur`
-3. Commit perubahan: `git commit -m "feat: tambah fitur X"`
-4. Push ke branch: `git push origin feature/nama-fitur`
-5. Buka Pull Request ke `develop`
-
-Gunakan format commit [Conventional Commits](https://www.conventionalcommits.org/):
-- `feat:` fitur baru
-- `fix:` perbaikan bug
-- `docs:` perubahan dokumentasi
-- `refactor:` refactor tanpa mengubah perilaku
-- `test:` menambah/mengubah test
-
----
-
-## 📄 License
-
-MIT © KAYA Bakery
+MIT — KAYA Bakery © 2026

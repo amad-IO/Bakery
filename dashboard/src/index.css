@@ -1,0 +1,54 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  * { box-sizing: border-box; }
+  body {
+    font-family: 'Inter', sans-serif;
+    background-color: #faf7f2;
+    color: #3a2415;
+  }
+  h1, h2, h3, h4, h5, h6 {
+    font-family: 'Geist', 'Inter', sans-serif;
+  }
+}
+
+@layer components {
+  .sidebar-item {
+    @apply flex items-center gap-3 px-4 py-2.5 rounded-lg text-sm font-medium transition-all duration-150 cursor-pointer text-white/70 hover:text-white hover:bg-white/10;
+  }
+  .sidebar-item.active {
+    @apply text-white bg-white/10 border-l-[3px] border-primary;
+    padding-left: calc(1rem - 3px);
+  }
+  .stat-card {
+    @apply bg-white rounded-xl2 border border-black/[0.06] p-5 flex flex-col gap-2;
+  }
+  .btn-primary {
+    @apply bg-primary text-canvas-alt font-semibold px-5 py-2.5 rounded-full text-sm hover:bg-primary-dark transition-all duration-150 active:scale-95;
+  }
+  .btn-outline {
+    @apply border border-current px-5 py-2.5 rounded-full text-sm font-medium transition-all duration-150 hover:bg-black/5 active:scale-95;
+  }
+  .btn-danger {
+    @apply bg-danger text-white font-semibold px-5 py-2.5 rounded-full text-sm hover:opacity-90 transition-all duration-150;
+  }
+  .input-field {
+    @apply w-full rounded-lg border border-black/10 bg-white px-3.5 py-2.5 text-sm placeholder:text-black/30 focus:outline-none focus:ring-2 focus:ring-primary/30 transition-all;
+  }
+  .label {
+    @apply text-xs font-semibold text-canvas-alt/60 uppercase tracking-wide mb-1 block;
+  }
+  .badge-status {
+    @apply inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-semibold;
+  }
+  .table-header {
+    @apply text-left text-xs font-semibold text-canvas-alt/50 uppercase tracking-wider px-4 py-3 bg-black/[0.02] first:rounded-tl-lg last:rounded-tr-lg;
+  }
+  .table-cell {
+    @apply px-4 py-3 text-sm border-b border-black/[0.05];
+  }
+}
